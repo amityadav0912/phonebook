@@ -4,22 +4,9 @@ import { v4 as uuid } from "uuid";
 import './App.css';
 import ContactList from './ContactList';
 import Header from './Header';
+import { BrowserRouter as Router, Routes , Route} from 'react-router-dom'
 
 function App() {
-
-  // let contacts = [
-  //   { 
-  //     id:"1",
-  //     name:"Amit",
-  //     email:"Amityadav@gmail.com"
-  //   },
-  //   {
-  //     id:"2",
-  //     name:"Ankita",
-  //     email:"Ankitayadav@gmail.com"
-  //   }
-  // ];
-
   const LOCAL_STORAGE_KEY = "contacts";
 
   const [contacts, setContacts] = useState(
@@ -43,13 +30,35 @@ function App() {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(contacts));
   }, [contacts]);
   
+
+  
   return (
     <div className='ui container'>
       <Header />
-      <AddContact addContactHandler ={addContactHandler}/>
-      <ContactList contacts={contacts} getContactId = {removeContactHandler}/>
+      <div style={{ marginTop: "100px" }}>
+        <Router>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <ContactList
+                  contacts={contacts}
+                  removeContactHandler={removeContactHandler}
+                />
+              }
+            />
+            <Route
+              path="/add"
+              element={
+                <AddContact
+                  addContactHandler={addContactHandler}
+                />
+              }
+            />
+          </Routes>
+        </Router>
+      </div>
     </div>
   );
 }
-
 export default App;
